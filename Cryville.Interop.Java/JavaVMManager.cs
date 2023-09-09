@@ -9,7 +9,7 @@ namespace Cryville.Interop.Java {
 	public class JavaVMManager {
 		static JavaVMManager m_instance;
 		/// <summary>
-		/// Gets an instance of the <see cref="JavaVMManager" /> singleton class.
+		/// An instance of the <see cref="JavaVMManager" /> singleton class.
 		/// </summary>
 		public static JavaVMManager Instance {
 			get {
