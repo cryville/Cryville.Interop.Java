@@ -13,7 +13,6 @@ namespace Cryville.Interop.Java.Unity {
 	/// <item><see cref="CallNonvirtualObjectMethod(IntPtr, IntPtr, IntPtr, JniValue[])" /> family</item>
 	/// <item><see cref="DefineClass(string, IntPtr, IntPtr, int)" /></item>
 	/// <item><see cref="GetDirectBufferAddress(IntPtr)" />, <see cref="GetDirectBufferCapacity(IntPtr)" />, and <see cref="NewDirectByteBuffer(void*, long)" /></item>
-	/// <item><see cref="GetJavaVM(out IntPtr)" /></item>
 	/// <item><see cref="GetObjectRefType(IntPtr)" /></item>
 	/// <item><see cref="GetPrimitiveArrayCritical(IntPtr, out bool)" /> and <see cref="ReleasePrimitiveArrayCritical(IntPtr, IntPtr, JniReleaseArrayElementsMode)" /></item>
 	/// <item><see cref="GetStringUTFChars(IntPtr, out bool)" />, <see cref="GetStringUTFRegion(IntPtr, int, int, byte*)" />, <see cref="NewStringUTF(byte*)" />, and <see cref="ReleaseStringUTFChars(char*, byte*)" /></item>
@@ -118,7 +117,10 @@ namespace Cryville.Interop.Java.Unity {
 		public int* GetIntArrayElements(IntPtr array, out bool isCopy) => GetArrayElements(array, out isCopy, GetIntArrayElement);
 		public void GetIntArrayRegion(IntPtr array, int start, int len, int* buf) => GetArrayRegion(array, start, len, buf, GetIntArrayElement);
 		public int GetIntField(IntPtr obj, IntPtr fieldID) => AndroidJNI.GetIntField(obj, fieldID);
-		public JniResult GetJavaVM(out IntPtr vm) => throw new NotImplementedException();
+		public JniResult GetJavaVM(out IJniInvoke vm) {
+			vm = JniInvoke.Instance;
+			return JniResult.OK;
+		}
 		readonly static Func<IntPtr, int, long> GetLongArrayElement = AndroidJNI.GetLongArrayElement;
 		public long* GetLongArrayElements(IntPtr array, out bool isCopy) => GetArrayElements(array, out isCopy, GetLongArrayElement);
 		public void GetLongArrayRegion(IntPtr array, int start, int len, long* buf) => GetArrayRegion(array, start, len, buf, GetLongArrayElement);

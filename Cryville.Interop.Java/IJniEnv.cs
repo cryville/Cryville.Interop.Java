@@ -760,7 +760,7 @@ namespace Cryville.Interop.Java {
 		/// </summary>
 		/// <param name="vm">The result.</param>
 		/// <returns><see cref="JniResult.OK" /> on success; a negative value on failure.</returns>
-		JniResult GetJavaVM(out IntPtr vm);
+		JniResult GetJavaVM(out IJniInvoke vm);
 
 		/// <summary>
 		/// Copies <paramref name="len" /> number of Unicode characters beginning at offset <paramref name="start" /> to the given buffer <paramref name="buf" />.
