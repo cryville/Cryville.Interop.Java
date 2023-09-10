@@ -50,6 +50,7 @@
     <Compile Include="IJniInvoke.cs" />
     <Compile Include="JavaVMAttachArgs.cs" />
     <Compile Include="JavaVMManager.cs" />
+    <Compile Include="JniException.cs" />
     <Compile Include="JniNativeMethod.cs" />
     <Compile Include="JniObjectRefType.cs" />
     <Compile Include="JniReleaseArrayElementsMode.cs" />

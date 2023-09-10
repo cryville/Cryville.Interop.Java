@@ -21,16 +21,13 @@ namespace Cryville.Interop.Java.Unity {
 		}
 		JniInvoke() { }
 
-		public JniResult AttachCurrentThread(out IJniEnv p_env, JavaVMAttachArgs? thr_args) {
+		public void AttachCurrentThread(out IJniEnv p_env, JavaVMAttachArgs? thr_args) {
 			p_env = JniEnv.Instance;
-			return (JniResult)AndroidJNI.AttachCurrentThread();
+			JniException.Check((JniResult)AndroidJNI.AttachCurrentThread());
 		}
-		public JniResult AttachCurrentThreadAsDaemon(out IJniEnv penv, JavaVMAttachArgs? args) => throw new NotImplementedException();
-		public JniResult DestroyJavaVM() => throw new NotImplementedException();
-		public JniResult DetachCurrentThread() => (JniResult)AndroidJNI.DetachCurrentThread();
-		public JniResult GetEnv(out IJniEnv env, int version) {
-			env = JniEnv.Instance;
-			return JniResult.OK;
-		}
+		public void AttachCurrentThreadAsDaemon(out IJniEnv penv, JavaVMAttachArgs? args) => throw new NotImplementedException();
+		public void DestroyJavaVM() => throw new NotImplementedException();
+		public void DetachCurrentThread() => JniException.Check((JniResult)AndroidJNI.DetachCurrentThread());
+		public void GetEnv(out IJniEnv env, int version) => env = JniEnv.Instance;
 	}
 }

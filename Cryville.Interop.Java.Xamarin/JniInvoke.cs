@@ -24,30 +24,28 @@ namespace Cryville.Interop.Java.Xamarin {
 		JniInvoke() { }
 
 		/// <inheritdoc />
-		public JniResult AttachCurrentThread(out IJniEnv p_env, JavaVMAttachArgs? thr_args) {
+		public void AttachCurrentThread(out IJniEnv p_env, JavaVMAttachArgs? thr_args) {
 			string name = null;
 			IntPtr group = default;
 			if (thr_args is JavaVMAttachArgs args) {
 				name = args.Name;
 				group = args.Group;
 			}
-			JniRuntime.CurrentRuntime.AttachCurrentThread(name, group == default ? default : new JniObjectReference(group));
+			try {
+				JniRuntime.CurrentRuntime.AttachCurrentThread(name, group == default ? default : new JniObjectReference(group));
+			}
+			catch (NotSupportedException ex) {
+				throw new JniException("AttachCurrentThread failed.", ex);
+			}
 			p_env = JniEnv.Instance;
-			return JniResult.OK;
 		}
 		/// <inheritdoc />
-		public JniResult AttachCurrentThreadAsDaemon(out IJniEnv penv, JavaVMAttachArgs? args) => throw new NotImplementedException();
+		public void AttachCurrentThreadAsDaemon(out IJniEnv penv, JavaVMAttachArgs? args) => throw new NotImplementedException();
 		/// <inheritdoc />
-		public JniResult DestroyJavaVM() {
-			JniRuntime.CurrentRuntime.DestroyRuntime();
-			return JniResult.OK;
-		}
+		public void DestroyJavaVM() => JniRuntime.CurrentRuntime.DestroyRuntime();
 		/// <inheritdoc />
-		public JniResult DetachCurrentThread() => throw new NotImplementedException();
+		public void DetachCurrentThread() => throw new NotImplementedException();
 		/// <inheritdoc />
-		public JniResult GetEnv(out IJniEnv env, int version) {
-			env = JniEnv.Instance;
-			return JniResult.OK;
-		}
+		public void GetEnv(out IJniEnv env, int version) => env = JniEnv.Instance;
 	}
 }

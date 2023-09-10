@@ -186,9 +186,10 @@ namespace Cryville.Interop.Java.Xamarin {
 			JniObjectReference.Dispose(ref r);
 		}
 		/// <inheritdoc />
-		public JniResult EnsureLocalCapacity(int capacity) {
-			References.EnsureLocalCapacity(capacity);
-			return JniResult.OK;
+		public void EnsureLocalCapacity(int capacity) {
+			try { References.EnsureLocalCapacity(capacity); }
+			catch (JavaException ex) { throw new JniException(ex); }
+			catch (InvalidOperationException ex) { throw new JniException(ex); }
 		}
 		/// <inheritdoc />
 		public bool ExceptionCheck() => Exceptions.ExceptionCheck();
@@ -365,14 +366,16 @@ namespace Cryville.Interop.Java.Xamarin {
 		/// <inheritdoc />
 		public bool IsSameObject(IntPtr ref1, IntPtr ref2) => Types.IsSameObject(new JniObjectReference(ref1), new JniObjectReference(ref2));
 		/// <inheritdoc />
-		public JniResult MonitorEnter(IntPtr obj) {
-			Monitors.MonitorEnter(new JniObjectReference(obj));
-			return JniResult.OK;
+		public void MonitorEnter(IntPtr obj) {
+			try { Monitors.MonitorEnter(new JniObjectReference(obj)); }
+			catch (JavaException ex) { throw new JniException(ex); }
+			catch (InvalidOperationException ex) { throw new JniException(ex); }
 		}
 		/// <inheritdoc />
-		public JniResult MonitorExit(IntPtr obj) {
-			Monitors.MonitorExit(new JniObjectReference(obj));
-			return JniResult.OK;
+		public void MonitorExit(IntPtr obj) {
+			try { Monitors.MonitorExit(new JniObjectReference(obj)); }
+			catch (JavaException ex) { throw new JniException(ex); }
+			catch (InvalidOperationException ex) { throw new JniException(ex); }
 		}
 		/// <inheritdoc />
 		public IntPtr NewBooleanArray(int length) => Arrays.NewBooleanArray(length).Handle;
@@ -411,14 +414,16 @@ namespace Cryville.Interop.Java.Xamarin {
 		/// <inheritdoc />
 		public IntPtr PopLocalFrame(IntPtr result) => References.PopLocalFrame(new JniObjectReference(result)).Handle;
 		/// <inheritdoc />
-		public JniResult PushLocalFrame(int capacity) {
-			References.PushLocalFrame(capacity);
-			return JniResult.OK;
+		public void PushLocalFrame(int capacity) {
+			try { References.PushLocalFrame(capacity); }
+			catch (JavaException ex) { throw new JniException(ex); }
+			catch (InvalidOperationException ex) { throw new JniException(ex); }
 		}
 		/// <inheritdoc />
-		public JniResult RegisterNatives(IntPtr clazz, JniNativeMethod[] methods) {
-			Types.RegisterNatives(new JniObjectReference(clazz), Unsafe.As<JniNativeMethodRegistration[]>(methods));
-			return JniResult.OK;
+		public void RegisterNatives(IntPtr clazz, JniNativeMethod[] methods) {
+			try { Types.RegisterNatives(new JniObjectReference(clazz), Unsafe.As<JniNativeMethodRegistration[]>(methods)); }
+			catch (JavaException ex) { throw new JniException(ex); }
+			catch (InvalidOperationException ex) { throw new JniException(ex); }
 		}
 		/// <inheritdoc />
 		public unsafe void ReleaseBooleanArrayElements(IntPtr array, bool* elems, JniReleaseArrayElementsMode mode) => Arrays.ReleaseBooleanArrayElements(new JniObjectReference(array), elems, (ReleaseMode)(int)mode);
@@ -499,23 +504,26 @@ namespace Cryville.Interop.Java.Xamarin {
 		/// <inheritdoc />
 		public void SetStaticShortField(IntPtr clazz, IntPtr fieldID, short value) => StaticFields.SetStaticShortField(new JniObjectReference(clazz), GetStaticField(fieldID), value);
 		/// <inheritdoc />
-		public JniResult Throw(IntPtr obj) {
-			Exceptions.Throw(new JniObjectReference(obj));
-			return JniResult.OK;
+		public void Throw(IntPtr obj) {
+			try { Exceptions.Throw(new JniObjectReference(obj)); }
+			catch (JavaException ex) { throw new JniException(ex); }
+			catch (InvalidOperationException ex) { throw new JniException(ex); }
 		}
 		/// <inheritdoc />
-		public JniResult ThrowNew(IntPtr clazz, string message) {
-			Exceptions.ThrowNew(new JniObjectReference(clazz), message);
-			return JniResult.OK;
+		public void ThrowNew(IntPtr clazz, string message) {
+			try { Exceptions.ThrowNew(new JniObjectReference(clazz), message); }
+			catch (JavaException ex) { throw new JniException(ex); }
+			catch (InvalidOperationException ex) { throw new JniException(ex); }
 		}
 		/// <inheritdoc />
 		public IntPtr ToReflectedField(IntPtr cls, IntPtr fieldID, bool isStatic) => throw new NotImplementedException();
 		/// <inheritdoc />
 		public IntPtr ToReflectedMethod(IntPtr cls, IntPtr methodID, bool isStatic) => throw new NotImplementedException();
 		/// <inheritdoc />
-		public JniResult UnregisterNatives(IntPtr clazz) {
-			Types.UnregisterNatives(new JniObjectReference(clazz));
-			return JniResult.OK;
+		public void UnregisterNatives(IntPtr clazz) {
+			try { Types.UnregisterNatives(new JniObjectReference(clazz)); }
+			catch (JavaException ex) { throw new JniException(ex); }
+			catch (InvalidOperationException ex) { throw new JniException(ex); }
 		}
 	}
 }

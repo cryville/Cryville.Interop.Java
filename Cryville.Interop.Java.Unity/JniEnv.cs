@@ -67,7 +67,7 @@ namespace Cryville.Interop.Java.Unity {
 		public void DeleteGlobalRef(IntPtr globalRef) => AndroidJNI.DeleteGlobalRef(globalRef);
 		public void DeleteLocalRef(IntPtr localRef) => AndroidJNI.DeleteLocalRef(localRef);
 		public void DeleteWeakGlobalRef(IntPtr obj) => AndroidJNI.DeleteWeakGlobalRef(obj);
-		public JniResult EnsureLocalCapacity(int capacity) => (JniResult)AndroidJNI.EnsureLocalCapacity(capacity);
+		public void EnsureLocalCapacity(int capacity) => JniException.Check((JniResult)AndroidJNI.EnsureLocalCapacity(capacity));
 		public bool ExceptionCheck() => AndroidJNI.ExceptionOccurred() != IntPtr.Zero;
 		public void ExceptionClear() => AndroidJNI.ExceptionClear();
 		public void ExceptionDescribe() => AndroidJNI.ExceptionDescribe();
@@ -117,10 +117,7 @@ namespace Cryville.Interop.Java.Unity {
 		public int* GetIntArrayElements(IntPtr array, out bool isCopy) => GetArrayElements(array, out isCopy, GetIntArrayElement);
 		public void GetIntArrayRegion(IntPtr array, int start, int len, int* buf) => GetArrayRegion(array, start, len, buf, GetIntArrayElement);
 		public int GetIntField(IntPtr obj, IntPtr fieldID) => AndroidJNI.GetIntField(obj, fieldID);
-		public JniResult GetJavaVM(out IJniInvoke vm) {
-			vm = JniInvoke.Instance;
-			return JniResult.OK;
-		}
+		public void GetJavaVM(out IJniInvoke vm) => vm = JniInvoke.Instance;
 		readonly static Func<IntPtr, int, long> GetLongArrayElement = AndroidJNI.GetLongArrayElement;
 		public long* GetLongArrayElements(IntPtr array, out bool isCopy) => GetArrayElements(array, out isCopy, GetLongArrayElement);
 		public void GetLongArrayRegion(IntPtr array, int start, int len, long* buf) => GetArrayRegion(array, start, len, buf, GetLongArrayElement);
@@ -170,8 +167,8 @@ namespace Cryville.Interop.Java.Unity {
 		public bool IsAssignableFrom(IntPtr clazz1, IntPtr clazz2) => AndroidJNI.IsAssignableFrom(clazz1, clazz2);
 		public bool IsInstanceOf(IntPtr obj, IntPtr clazz) => AndroidJNI.IsInstanceOf(obj, clazz);
 		public bool IsSameObject(IntPtr ref1, IntPtr ref2) => AndroidJNI.IsSameObject(ref1, ref2);
-		public JniResult MonitorEnter(IntPtr obj) => throw new NotImplementedException();
-		public JniResult MonitorExit(IntPtr obj) => throw new NotImplementedException();
+		public void MonitorEnter(IntPtr obj) => throw new NotImplementedException();
+		public void MonitorExit(IntPtr obj) => throw new NotImplementedException();
 		public IntPtr NewBooleanArray(int length) => AndroidJNI.NewBooleanArray(length);
 		public IntPtr NewByteArray(int length) => AndroidJNI.NewSByteArray(length);
 		public IntPtr NewCharArray(int length) => AndroidJNI.NewCharArray(length);
@@ -189,8 +186,8 @@ namespace Cryville.Interop.Java.Unity {
 		public IntPtr NewStringUTF(byte* bytes) => throw new NotImplementedException();
 		public IntPtr NewWeakGlobalRef(IntPtr obj) => AndroidJNI.NewWeakGlobalRef(obj);
 		public IntPtr PopLocalFrame(IntPtr result) => AndroidJNI.PopLocalFrame(result);
-		public JniResult PushLocalFrame(int capacity) => (JniResult)AndroidJNI.PushLocalFrame(capacity);
-		public JniResult RegisterNatives(IntPtr clazz, JniNativeMethod[] methods) => throw new NotImplementedException();
+		public void PushLocalFrame(int capacity) => JniException.Check((JniResult)AndroidJNI.PushLocalFrame(capacity));
+		public void RegisterNatives(IntPtr clazz, JniNativeMethod[] methods) => throw new NotImplementedException();
 		public void ReleaseBooleanArrayElements(IntPtr array, bool* elems, JniReleaseArrayElementsMode mode) => Marshal.FreeHGlobal((IntPtr)elems);
 		public void ReleaseByteArrayElements(IntPtr array, sbyte* elems, JniReleaseArrayElementsMode mode) => Marshal.FreeHGlobal((IntPtr)elems);
 		public void ReleaseCharArrayElements(IntPtr array, char* elems, JniReleaseArrayElementsMode mode) => Marshal.FreeHGlobal((IntPtr)elems);
@@ -244,10 +241,10 @@ namespace Cryville.Interop.Java.Unity {
 		public void SetStaticLongField(IntPtr clazz, IntPtr fieldID, long value) => AndroidJNI.SetStaticLongField(clazz, fieldID, value);
 		public void SetStaticObjectField(IntPtr clazz, IntPtr fieldID, IntPtr value) => AndroidJNI.SetStaticObjectField(clazz, fieldID, value);
 		public void SetStaticShortField(IntPtr clazz, IntPtr fieldID, short value) => AndroidJNI.SetStaticShortField(clazz, fieldID, value);
-		public JniResult Throw(IntPtr obj) => (JniResult)AndroidJNI.Throw(obj);
-		public JniResult ThrowNew(IntPtr clazz, string message) => (JniResult)AndroidJNI.ThrowNew(clazz, message);
+		public void Throw(IntPtr obj) => JniException.Check((JniResult)AndroidJNI.Throw(obj));
+		public void ThrowNew(IntPtr clazz, string message) => JniException.Check((JniResult)AndroidJNI.ThrowNew(clazz, message));
 		public IntPtr ToReflectedField(IntPtr cls, IntPtr fieldID, bool isStatic) => AndroidJNI.ToReflectedField(cls, fieldID, isStatic);
 		public IntPtr ToReflectedMethod(IntPtr cls, IntPtr methodID, bool isStatic) => AndroidJNI.ToReflectedMethod(cls, methodID, isStatic);
-		public JniResult UnregisterNatives(IntPtr clazz) => throw new NotImplementedException();
+		public void UnregisterNatives(IntPtr clazz) => throw new NotImplementedException();
 	}
 }

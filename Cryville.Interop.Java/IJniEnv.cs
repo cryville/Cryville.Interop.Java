@@ -98,15 +98,15 @@ namespace Cryville.Interop.Java {
 		/// Causes a <c>java.lang.Throwable</c> object to be thrown.
 		/// </summary>
 		/// <param name="obj">A <c>java.lang.Throwable</c> object.</param>
-		/// <returns><see cref="JniResult.OK" /> on success; a negative value on failure.</returns>
-		JniResult Throw(IntPtr obj);
+		/// <exception cref="JniException">On failure.</exception>
+		void Throw(IntPtr obj);
 		/// <summary>
 		/// Constructs an exception object from the specified class with the message specified by <paramref name="message" /> and causes that exception to be thrown.
 		/// </summary>
 		/// <param name="clazz">A subclass of <c>java.lang.Throwable</c>.</param>
 		/// <param name="message">The message used to construct the <c>java.lang.Throwable</c> object.</param>
-		/// <returns><see cref="JniResult.OK" /> on success; a negative value on failure.</returns>
-		JniResult ThrowNew(IntPtr clazz, string message);
+		/// <exception cref="JniException">On failure.</exception>
+		void ThrowNew(IntPtr clazz, string message);
 		/// <summary>
 		/// Determines if an exception is being thrown.
 		/// </summary>
@@ -139,11 +139,11 @@ namespace Cryville.Interop.Java {
 		/// Creates a new local reference frame, in which at least a given number of local references can be created.
 		/// </summary>
 		/// <param name="capacity"></param>
-		/// <returns><see cref="JniResult.OK" /> on success; a negative number with a pending <c>OutOfMemoryError</c> thrown on failure.</returns>
+		/// <exception cref="JniException">On failure with a pending <c>OutOfMemoryError</c>.</exception>
 		/// <remarks>
 		/// <para>Note that local references already created in previous local frames are still valid in the current local frame.</para>
 		/// </remarks>
-		JniResult PushLocalFrame(int capacity);
+		void PushLocalFrame(int capacity);
 		/// <summary>
 		/// Pops off the current local reference frame, frees all the local references, and returns a local reference in the previous local reference frame for the given <paramref name="result" /> object.
 		/// </summary>
@@ -201,12 +201,12 @@ namespace Cryville.Interop.Java {
 		/// Ensures that at least a given number of local references can be created in the current thread.
 		/// </summary>
 		/// <param name="capacity">The number of local references.</param>
-		/// <returns><see cref="JniResult.OK" /> on success; otherwise a negative number with a <c>OutOfMemoryError</c> thrown.</returns>
+		/// <exception cref="JniException">On failure with a pending <c>OutOfMemoryError</c>.</exception>
 		/// <remarks>
 		/// <para>Before it enters a native method, the VM automatically ensures that at least 16 local references can be created.</para>
 		/// <para>For backward compatibility, the VM allocates local references beyond the ensured capacity. (As a debugging support, the VM may give the user warnings that too many local references are being created. In the JDK, the programmer can supply the <c>-verbose:jni</c> command line option to turn on these messages.) The VM calls <c>FatalError</c> if no more local references can be created beyond the ensured capacity.</para>
 		/// </remarks>
-		JniResult EnsureLocalCapacity(int capacity);
+		void EnsureLocalCapacity(int capacity);
 
 		/// <summary>
 		/// Allocates a new Java object without invoking any of the constructors for the object.
@@ -720,47 +720,47 @@ namespace Cryville.Interop.Java {
 		/// </summary>
 		/// <param name="clazz">A Java class object.</param>
 		/// <param name="methods">The native methods in the class.</param>
-		/// <returns><see cref="JniResult.OK" /> on success; a negative value on failure.</returns>
+		/// <exception cref="JniException">On failure.</exception>
 		/// <remarks>
 		/// <para>The <paramref name="methods" /> parameter specifies an array of <see cref="JniNativeMethod" /> structures that contain the names, signatures, and function pointers of the native methods.</para>
 		/// </remarks>
-		JniResult RegisterNatives(IntPtr clazz, JniNativeMethod[] methods);
+		void RegisterNatives(IntPtr clazz, JniNativeMethod[] methods);
 		/// <summary>
 		/// Unregisters native methods of a class.
 		/// </summary>
 		/// <param name="clazz">A Java class object.</param>
-		/// <returns><see cref="JniResult.OK" /> on success; a negative value on failure.</returns>
+		/// <exception cref="JniException">On failure.</exception>
 		/// <remarks>
 		/// <para>The class goes back to the state before it was linked or registered with its native method functions.</para>
 		/// <para>This function should not be used in normal native code. Instead, it provides special programs a way to reload and relink native libraries.</para>
 		/// </remarks>
-		JniResult UnregisterNatives(IntPtr clazz);
+		void UnregisterNatives(IntPtr clazz);
 		/// <summary>
 		/// Enters the monitor associated with the underlying Java object referred to by <paramref name="obj" />.
 		/// </summary>
 		/// <param name="obj">A normal Java object or class object.</param>
-		/// <returns><see cref="JniResult.OK" /> on success; a negative value on failure.</returns>
+		/// <exception cref="JniException">On failure.</exception>
 		/// <remarks>
 		/// <para>Enters the monitor associated with the object referred to by <paramref name="obj" />. The <paramref name="obj" /> reference must not be <see cref="IntPtr.Zero" />.</para>
 		/// <para>Each Java object has a monitor associated with it. If the current thread already owns the monitor associated with <paramref name="obj" />, it increments a counter in the monitor indicating the number of times this thread has entered the monitor. If the monitor associated with <paramref name="obj" /> is not owned by any thread, the current thread becomes the owner of the monitor, setting the entry count of this monitor to 1. If another thread already owns the monitor associated with <paramref name="obj" />, the current thread waits until the monitor is released, then tries again to gain ownership.</para>
 		/// </remarks>
-		JniResult MonitorEnter(IntPtr obj);
+		void MonitorEnter(IntPtr obj);
 		/// <summary>
 		/// Exits the monitor associated with the underlying Java object referred to by <paramref name="obj" />.
 		/// </summary>
 		/// <param name="obj">A normal Java object or class object.</param>
-		/// <returns><see cref="JniResult.OK" /> on success; a negative value on failure.</returns>
+		/// <exception cref="JniException">On failure.</exception>
 		/// <remarks>
 		/// <para>The current thread must be the owner of the monitor associated with the underlying Java object referred to by <paramref name="obj" />. The thread decrements the counter indicating the number of times it has entered this monitor. If the value of the counter becomes zero, the current thread releases the monitor.</para>
 		/// <para>Native code must not use <see cref="MonitorExit(IntPtr)" /> to exit a monitor entered through a synchronized method or a <c>monitorenter</c> Java virtual machine instruction.</para>
 		/// </remarks>
-		JniResult MonitorExit(IntPtr obj);
+		void MonitorExit(IntPtr obj);
 		/// <summary>
 		/// Returns the Java VM interface (used in the Invocation API) associated with the current thread.
 		/// </summary>
 		/// <param name="vm">The result.</param>
-		/// <returns><see cref="JniResult.OK" /> on success; a negative value on failure.</returns>
-		JniResult GetJavaVM(out IJniInvoke vm);
+		/// <exception cref="JniException">On failure.</exception>
+		void GetJavaVM(out IJniInvoke vm);
 
 		/// <summary>
 		/// Copies <paramref name="len" /> number of Unicode characters beginning at offset <paramref name="start" /> to the given buffer <paramref name="buf" />.

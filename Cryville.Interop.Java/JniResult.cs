@@ -31,5 +31,9 @@ namespace Cryville.Interop.Java {
 		/// Invalid arguments.
 		/// </summary>
 		Invalid = -6,
+		/// <summary>
+		/// Check inner exception.
+		/// </summary>
+		Inner = -0x1000,
 	}
 }
