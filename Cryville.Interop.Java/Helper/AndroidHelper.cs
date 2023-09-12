@@ -10,13 +10,6 @@ namespace Cryville.Interop.Java.Helper {
 			return env;
 		}
 
-		[ThreadStatic]
-		static JniValue[] _args0;
-		static JniValue[] Args() {
-			if (_args0 == null) _args0 = new JniValue[0];
-			return _args0;
-		}
-
 		/// <summary>
 		/// Gets a local reference to the current <c>android.app.Application</c> object.
 		/// </summary>
@@ -33,7 +26,7 @@ namespace Cryville.Interop.Java.Helper {
 				if (c == IntPtr.Zero) throw new InvalidOperationException("Could not find the Java class android.app.ActivityThread.");
 				var m = env.GetStaticMethodID(c, "currentApplication", "Landroid/app/Application;");
 				if (m == IntPtr.Zero) throw new InvalidOperationException("Could not find the method currentApplication() on Java class android.app.ActivityThread.");
-				result = env.CallStaticObjectMethod(c, m, Args());
+				result = env.CallStaticObjectMethod(c, m, ArgumentHelper.Args());
 			}
 			finally {
 				result = env.PopLocalFrame(result);
