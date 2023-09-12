@@ -7,6 +7,7 @@ namespace Cryville.Interop.Java.Xamarin {
 	/// </summary>
 	/// <remarks>
 	/// <para><see cref="AttachCurrentThreadAsDaemon(JavaVMAttachArgs?)" /> is not implemented.</para>
+	/// <para><see cref="DetachCurrentThread" /> does nothing.</para>
 	/// <para><see cref="GetEnv(int)" /> always succeeds.</para>
 	/// </remarks>
 	public class JniInvoke : IJniInvoke {
@@ -44,7 +45,7 @@ namespace Cryville.Interop.Java.Xamarin {
 		/// <inheritdoc />
 		public void DestroyJavaVM() => JniRuntime.CurrentRuntime.DestroyRuntime();
 		/// <inheritdoc />
-		public void DetachCurrentThread() => throw new NotImplementedException();
+		public void DetachCurrentThread() { }
 		/// <inheritdoc />
 		public IJniEnv GetEnv(int version) => JniEnv.Instance;
 	}
