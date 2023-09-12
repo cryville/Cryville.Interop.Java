@@ -14,19 +14,13 @@ namespace Cryville.Interop.Java.Helper {
 		/// <para>This method can only be called from the main thread, otherwise it returns a reference to <c>null</c>.</para>
 		/// </remarks>
 		public static IntPtr GetCurrentApplication(IJniEnv env) {
-			IntPtr result = IntPtr.Zero;
-			env.PushLocalFrame(2);
-			try {
+			using (var frame = new JniLocalFrame(env, 2)) {
 				var c = env.FindClass("android/app/ActivityThread");
 				if (c == IntPtr.Zero) throw new InvalidOperationException("Could not find the Java class android.app.ActivityThread.");
 				var m = env.GetStaticMethodID(c, "currentApplication", "Landroid/app/Application;");
 				if (m == IntPtr.Zero) throw new InvalidOperationException("Could not find the method currentApplication() on Java class android.app.ActivityThread.");
-				result = env.CallStaticObjectMethod(c, m, ArgumentHelper.Args());
+				return frame.Pop(env.CallStaticObjectMethod(c, m, ArgumentHelper.Args()));
 			}
-			finally {
-				result = env.PopLocalFrame(result);
-			}
-			return result;
 		}
 	}
 }

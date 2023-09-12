@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helper\AndroidHelper.cs" />
+    <Compile Include="Helper\ArgumentHelper.cs" />
+    <Compile Include="Helper\JniLocalFrame.cs" />
     <Compile Include="IJniInvoke.cs" />
     <Compile Include="JavaVMAttachArgs.cs" />
     <Compile Include="JavaVMManager.cs" />
