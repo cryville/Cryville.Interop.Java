@@ -270,7 +270,7 @@ namespace Cryville.Interop.Java.Xamarin {
 		/// <inheritdoc />
 		public int GetIntField(IntPtr obj, IntPtr fieldID) => InstanceFields.GetIntField(new JniObjectReference(obj), GetField(fieldID));
 		/// <inheritdoc />
-		public void GetJavaVM(out IJniInvoke vm) => vm = JniInvoke.Instance;
+		public IJniInvoke GetJavaVM() => JniInvoke.Instance;
 		/// <inheritdoc />
 		public unsafe long* GetLongArrayElements(IntPtr array, out bool isCopy) {
 			fixed (bool* ptr = &isCopy) return Arrays.GetLongArrayElements(new JniObjectReference(array), ptr);

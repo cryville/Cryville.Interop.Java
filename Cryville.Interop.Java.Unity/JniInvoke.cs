@@ -6,9 +6,9 @@ namespace Cryville.Interop.Java.Unity {
 	/// The Unity JNI Invocation API.
 	/// </summary>
 	/// <remarks>
-	/// <para><see cref="AttachCurrentThreadAsDaemon(out IJniEnv, JavaVMAttachArgs?)" /> and <see cref="DestroyJavaVM" /> are not implemented.</para>
+	/// <para><see cref="AttachCurrentThreadAsDaemon(JavaVMAttachArgs?)" /> and <see cref="DestroyJavaVM" /> are not implemented.</para>
 	/// <para>All parameters of type <see cref="JavaVMAttachArgs" /> are not supported and ignored.</para>
-	/// <para><see cref="GetEnv(out IJniEnv, int)" /> always succeeds.</para>
+	/// <para><see cref="GetEnv(int)" /> always succeeds.</para>
 	/// </remarks>
 	public class JniInvoke : IJniInvoke {
 		static JniInvoke m_instance;
@@ -21,13 +21,13 @@ namespace Cryville.Interop.Java.Unity {
 		}
 		JniInvoke() { }
 
-		public void AttachCurrentThread(out IJniEnv p_env, JavaVMAttachArgs? thr_args) {
-			p_env = JniEnv.Instance;
+		public IJniEnv AttachCurrentThread(JavaVMAttachArgs? thr_args) {
 			JniException.Check((JniResult)AndroidJNI.AttachCurrentThread());
+			return JniEnv.Instance;
 		}
-		public void AttachCurrentThreadAsDaemon(out IJniEnv penv, JavaVMAttachArgs? args) => throw new NotImplementedException();
+		public IJniEnv AttachCurrentThreadAsDaemon(JavaVMAttachArgs? args) => throw new NotImplementedException();
 		public void DestroyJavaVM() => throw new NotImplementedException();
 		public void DetachCurrentThread() => JniException.Check((JniResult)AndroidJNI.DetachCurrentThread());
-		public void GetEnv(out IJniEnv env, int version) => env = JniEnv.Instance;
+		public IJniEnv GetEnv(int version) => JniEnv.Instance;
 	}
 }

@@ -117,7 +117,7 @@ namespace Cryville.Interop.Java.Unity {
 		public int* GetIntArrayElements(IntPtr array, out bool isCopy) => GetArrayElements(array, out isCopy, GetIntArrayElement);
 		public void GetIntArrayRegion(IntPtr array, int start, int len, int* buf) => GetArrayRegion(array, start, len, buf, GetIntArrayElement);
 		public int GetIntField(IntPtr obj, IntPtr fieldID) => AndroidJNI.GetIntField(obj, fieldID);
-		public void GetJavaVM(out IJniInvoke vm) => vm = JniInvoke.Instance;
+		public IJniInvoke GetJavaVM() => JniInvoke.Instance;
 		readonly static Func<IntPtr, int, long> GetLongArrayElement = AndroidJNI.GetLongArrayElement;
 		public long* GetLongArrayElements(IntPtr array, out bool isCopy) => GetArrayElements(array, out isCopy, GetLongArrayElement);
 		public void GetLongArrayRegion(IntPtr array, int start, int len, long* buf) => GetArrayRegion(array, start, len, buf, GetLongArrayElement);

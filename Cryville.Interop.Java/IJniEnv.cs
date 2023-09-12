@@ -758,9 +758,9 @@ namespace Cryville.Interop.Java {
 		/// <summary>
 		/// Returns the Java VM interface (used in the Invocation API) associated with the current thread.
 		/// </summary>
-		/// <param name="vm">The result.</param>
+		/// <returns>The result.</returns>
 		/// <exception cref="JniException">On failure.</exception>
-		void GetJavaVM(out IJniInvoke vm);
+		IJniInvoke GetJavaVM();
 
 		/// <summary>
 		/// Copies <paramref name="len" /> number of Unicode characters beginning at offset <paramref name="start" /> to the given buffer <paramref name="buf" />.

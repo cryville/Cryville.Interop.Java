@@ -6,8 +6,8 @@ namespace Cryville.Interop.Java.Xamarin {
 	/// The Xamarin JNI Invocation API.
 	/// </summary>
 	/// <remarks>
-	/// <para><see cref="AttachCurrentThreadAsDaemon(out IJniEnv, JavaVMAttachArgs?)" /> and <see cref="DetachCurrentThread" /> are not implemented.</para>
-	/// <para><see cref="GetEnv(out IJniEnv, int)" /> always succeeds.</para>
+	/// <para><see cref="AttachCurrentThreadAsDaemon(JavaVMAttachArgs?)" /> is not implemented.</para>
+	/// <para><see cref="GetEnv(int)" /> always succeeds.</para>
 	/// </remarks>
 	public class JniInvoke : IJniInvoke {
 		static JniInvoke m_instance;
@@ -24,7 +24,7 @@ namespace Cryville.Interop.Java.Xamarin {
 		JniInvoke() { }
 
 		/// <inheritdoc />
-		public void AttachCurrentThread(out IJniEnv p_env, JavaVMAttachArgs? thr_args) {
+		public IJniEnv AttachCurrentThread(JavaVMAttachArgs? thr_args) {
 			string name = null;
 			IntPtr group = default;
 			if (thr_args is JavaVMAttachArgs args) {
@@ -37,15 +37,15 @@ namespace Cryville.Interop.Java.Xamarin {
 			catch (NotSupportedException ex) {
 				throw new JniException("AttachCurrentThread failed.", ex);
 			}
-			p_env = JniEnv.Instance;
+			return JniEnv.Instance;
 		}
 		/// <inheritdoc />
-		public void AttachCurrentThreadAsDaemon(out IJniEnv penv, JavaVMAttachArgs? args) => throw new NotImplementedException();
+		public IJniEnv AttachCurrentThreadAsDaemon(JavaVMAttachArgs? args) => throw new NotImplementedException();
 		/// <inheritdoc />
 		public void DestroyJavaVM() => JniRuntime.CurrentRuntime.DestroyRuntime();
 		/// <inheritdoc />
 		public void DetachCurrentThread() => throw new NotImplementedException();
 		/// <inheritdoc />
-		public void GetEnv(out IJniEnv env, int version) => env = JniEnv.Instance;
+		public IJniEnv GetEnv(int version) => JniEnv.Instance;
 	}
 }
