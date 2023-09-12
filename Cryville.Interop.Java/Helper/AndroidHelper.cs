@@ -5,20 +5,15 @@ namespace Cryville.Interop.Java.Helper {
 	/// Provides a set of helper methods for Android.
 	/// </summary>
 	public static class AndroidHelper {
-		static IJniEnv GetEnv() {
-			JavaVMManager.Instance.CurrentVM.GetEnv(out var env, 0x00010006);
-			return env;
-		}
-
 		/// <summary>
 		/// Gets a local reference to the current <c>android.app.Application</c> object.
 		/// </summary>
+		/// <param name="env">The <see cref="IJniEnv" />.</param>
 		/// <returns>A local reference to the current <c>android.app.Application</c> object.</returns>
 		/// <remarks>
 		/// <para>This method can only be called from the main thread, otherwise it returns a reference to <c>null</c>.</para>
 		/// </remarks>
-		public static IntPtr GetCurrentApplication() {
-			IJniEnv env = GetEnv();
+		public static IntPtr GetCurrentApplication(IJniEnv env) {
 			IntPtr result = IntPtr.Zero;
 			env.PushLocalFrame(2);
 			try {
