@@ -11,7 +11,7 @@ namespace Cryville.Interop.Java.Helper {
 		/// <param name="env">The <see cref="IJniEnv" />.</param>
 		/// <returns>A local reference to the current <c>android.app.Application</c> object.</returns>
 		/// <remarks>
-		/// <para>This method can only be called from the main thread, otherwise it returns a reference to <c>null</c>.</para>
+		/// <para>This method can only be called from the main thread, otherwise it may return a reference to <c>null</c>.</para>
 		/// </remarks>
 		public static IntPtr GetCurrentApplication(IJniEnv env) {
 			using (var frame = new JniLocalFrame(env, 2)) {

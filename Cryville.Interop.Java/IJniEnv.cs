@@ -138,7 +138,7 @@ namespace Cryville.Interop.Java {
 		/// <summary>
 		/// Creates a new local reference frame, in which at least a given number of local references can be created.
 		/// </summary>
-		/// <param name="capacity"></param>
+		/// <param name="capacity">The capacity of the frame.</param>
 		/// <exception cref="JniException">On failure with a pending <c>OutOfMemoryError</c>.</exception>
 		/// <remarks>
 		/// <para>Note that local references already created in previous local frames are still valid in the current local frame.</para>
