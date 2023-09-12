@@ -22,5 +22,26 @@ namespace Cryville.Interop.Java.Helper {
 				return frame.Pop(env.CallStaticObjectMethod(c, m, ArgumentHelper.Args()));
 			}
 		}
+
+		/// <summary>
+		/// Gets a local reference to a system service associated with the context specified by <paramref name="context" />.
+		/// </summary>
+		/// <param name="env">The <see cref="IJniEnv" />.</param>
+		/// <param name="context">The context.</param>
+		/// <param name="name">The name of a static field in the class <c>android.content.Context</c>.</param>
+		/// <returns>A local reference to a system service.</returns>
+		public static IntPtr GetSystemService(IJniEnv env, IntPtr context, string name) {
+			using (var frame = new JniLocalFrame(env, 3)) {
+				var c = env.FindClass("android/content/Context");
+				if (c == IntPtr.Zero) throw new InvalidOperationException("Could not find the Java class android.content.Context.");
+				var f = env.GetStaticFieldID(c, name, "Ljava/lang/String;");
+				if (f == IntPtr.Zero) throw new InvalidOperationException(string.Format("Could not find the static field {0} on Java class android.content.Context.", name));
+				var v = env.GetStaticObjectField(c, f);
+
+				var m = env.GetMethodID(c, "getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;");
+				if (m == IntPtr.Zero) throw new InvalidOperationException("Could not find the method getSystemService(String) on Java class android.content.Context.");
+				return frame.Pop(env.CallObjectMethod(context, m, ArgumentHelper.Args(new JniValue(v))));
+			}
+		}
 	}
 }
