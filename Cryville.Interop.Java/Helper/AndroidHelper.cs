@@ -17,7 +17,7 @@ namespace Cryville.Interop.Java.Helper {
 			using (var frame = new JniLocalFrame(env, 2)) {
 				var c = env.FindClass("android/app/ActivityThread");
 				if (c == IntPtr.Zero) throw new InvalidOperationException("Could not find the Java class android.app.ActivityThread.");
-				var m = env.GetStaticMethodID(c, "currentApplication", "Landroid/app/Application;");
+				var m = env.GetStaticMethodID(c, "currentApplication", "()Landroid/app/Application;");
 				if (m == IntPtr.Zero) throw new InvalidOperationException("Could not find the method currentApplication() on Java class android.app.ActivityThread.");
 				return frame.Pop(env.CallStaticObjectMethod(c, m, ArgumentHelper.Args()));
 			}
