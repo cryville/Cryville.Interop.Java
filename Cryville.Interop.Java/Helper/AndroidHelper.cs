@@ -5,6 +5,24 @@ namespace Cryville.Interop.Java.Helper {
 	/// Provides a set of helper methods for Android.
 	/// </summary>
 	public static class AndroidHelper {
+		static int m_deviceApiLevel;
+		/// <summary>
+		/// The Android API level of the device.
+		/// </summary>
+		public static int DeviceApiLevel {
+			get {
+				if (m_deviceApiLevel == 0) {
+					var env = JavaVMManager.CurrentEnv;
+					using (var frame = new JniLocalFrame(env, 1)) {
+						var c = env.FindClass("android/os/Build$VERSION");
+						var m = env.GetStaticFieldID(c, "SDK_INT", "I");
+						m_deviceApiLevel = env.GetStaticIntField(c, m);
+					}
+				}
+				return m_deviceApiLevel;
+			}
+		}
+
 		/// <summary>
 		/// Gets a local reference to the current <c>android.app.Application</c> object.
 		/// </summary>
