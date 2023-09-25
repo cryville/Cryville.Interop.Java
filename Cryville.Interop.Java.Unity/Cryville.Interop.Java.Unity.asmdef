@@ -1,3 +1,18 @@
 {
-	"name": "Cryville.Interop.Java.Unity"
+    "name": "Cryville.Interop.Java.Unity",
+    "rootNamespace": "Cryville.Interop.Java.Unity",
+    "references": [],
+    "includePlatforms": [
+        "Android"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [
+        ""
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
