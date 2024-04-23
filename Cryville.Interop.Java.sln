@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryville.Interop.Java.Unity
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cryville.Interop.Java.Xamarin", "Cryville.Interop.Java.Xamarin\Cryville.Interop.Java.Xamarin.csproj", "{57256ABD-B613-4BFA-9ECE-B40C43838B08}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cryville.Interop.Java.ObjectStream", "Cryville.Interop.Java.ObjectStream\Cryville.Interop.Java.ObjectStream.csproj", "{730CB62E-9621-4100-843C-E8E0C0D79EC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{57256ABD-B613-4BFA-9ECE-B40C43838B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57256ABD-B613-4BFA-9ECE-B40C43838B08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57256ABD-B613-4BFA-9ECE-B40C43838B08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{730CB62E-9621-4100-843C-E8E0C0D79EC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{730CB62E-9621-4100-843C-E8E0C0D79EC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{730CB62E-9621-4100-843C-E8E0C0D79EC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{730CB62E-9621-4100-843C-E8E0C0D79EC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
