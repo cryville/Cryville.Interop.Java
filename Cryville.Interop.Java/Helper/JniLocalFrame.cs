@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Cryville.Interop.Java.Helper {
 	/// <summary>
@@ -20,6 +21,7 @@ namespace Cryville.Interop.Java.Helper {
 	/// }
 	/// </code>
 	/// </remarks>
+	[SuppressMessage("Performance", "CA1815", Justification = "Not equatable")]
 	public struct JniLocalFrame : IDisposable {
 		readonly IJniEnv _env;
 		bool _popped;
@@ -29,7 +31,7 @@ namespace Cryville.Interop.Java.Helper {
 		/// <param name="env">The <see cref="IJniEnv" />.</param>
 		/// <param name="capacity">The capacity.</param>
 		public JniLocalFrame(IJniEnv env, int capacity) {
-			_env = env;
+			_env = env ?? throw new ArgumentNullException(nameof(env));
 			_popped = false;
 			env.PushLocalFrame(capacity);
 		}
@@ -48,7 +50,7 @@ namespace Cryville.Interop.Java.Helper {
 		/// <summary>
 		/// Pops off the local reference frame and frees all the local references.
 		/// </summary>
-		public void Dispose() {
+		public readonly void Dispose() {
 			if (_popped) return;
 			_env.PopLocalFrame(IntPtr.Zero);
 		}

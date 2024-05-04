@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using UnsafeIL;
 
@@ -141,35 +142,21 @@ namespace Cryville.Interop.Java {
 		}
 
 		/// <inheritdoc />
-		public override int GetHashCode() {
-			return j.GetHashCode();
-		}
+		public override int GetHashCode() => j.GetHashCode();
 
 		/// <inheritdoc />
-		public override bool Equals(object obj) {
-			JniValue? o = obj as JniValue?;
-			if (!o.HasValue) return false;
-			return Equals(o.Value);
-		}
+		public override readonly bool Equals(object obj) => obj is JniValue o && Equals(o);
 
 		/// <inheritdoc />
-		public bool Equals(JniValue other) {
-			return j == other.j;
-		}
+		public readonly bool Equals(JniValue other) => j == other.j;
 
 		/// <inheritdoc />
-		public static bool operator ==(JniValue lhs, JniValue rhs) {
-			return lhs.j == rhs.j;
-		}
+		public static bool operator ==(JniValue lhs, JniValue rhs) => lhs.j == rhs.j;
 
 		/// <inheritdoc />
-		public static bool operator !=(JniValue lhs, JniValue rhs) {
-			return lhs.j != rhs.j;
-		}
+		public static bool operator !=(JniValue lhs, JniValue rhs) => lhs.j != rhs.j;
 
 		/// <inheritdoc />
-		public override string ToString() {
-			return string.Format("JniValue(z={0},b={1},c={2},s={3},i={4},j={5},f={6},d={7},l=0x{8})", z, b, c, s, i, j, f, d, l.ToString("x"));
-		}
+		public override string ToString() => string.Format(CultureInfo.InvariantCulture, "JniValue(z={0},b={1},c={2},s={3},i={4},j={5},f={6},d={7},l=0x{8})", z, b, c, s, i, j, f, d, l.ToString("x"));
 	}
 }

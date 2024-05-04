@@ -15,13 +15,7 @@ namespace Cryville.Interop.Java.Xamarin {
 		/// <summary>
 		/// An instance of the <see cref="JniInvoke" /> singleton class.
 		/// </summary>
-		public static JniInvoke Instance {
-			get {
-				if (m_instance == null)
-					m_instance = new JniInvoke();
-				return m_instance;
-			}
-		}
+		public static JniInvoke Instance => m_instance ??= new JniInvoke();
 		JniInvoke() { }
 
 		/// <inheritdoc />

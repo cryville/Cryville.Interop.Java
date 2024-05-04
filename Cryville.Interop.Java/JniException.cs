@@ -49,22 +49,20 @@ namespace Cryville.Interop.Java {
 		/// <param name="result">The result code returned by the JNI function.</param>
 		/// <param name="message">The error message that explains the reason for the exception.</param>
 		/// <param name="innerException">The exception that is the cause of the current exception.</param>
-		public JniException(JniResult result, string message, Exception innerException) : base(message, innerException) {
+		public JniException(JniResult result, string message, Exception? innerException) : base(message, innerException) {
 			JniResult = result;
 		}
 
-		static string GenerateMessage(JniResult result) {
-			switch (result) {
-				case JniResult.OK: return "Success.";
-				case JniResult.Detached: return "Thread detached from the VM.";
-				case JniResult.Version: return "Invalid JNI version.";
-				case JniResult.NoMemory: return "Out of memory.";
-				case JniResult.Existed: return "VM already created.";
-				case JniResult.Invalid: return "Invalid argument.";
-				case JniResult.Inner: return "JNI error.";
-				default: return "Unknown error.";
-			}
-		}
+		static string GenerateMessage(JniResult result) => result switch {
+			JniResult.OK => "Success.",
+			JniResult.Detached => "Thread detached from the VM.",
+			JniResult.Version => "Invalid JNI version.",
+			JniResult.NoMemory => "Out of memory.",
+			JniResult.Existed => "VM already created.",
+			JniResult.Invalid => "Invalid argument.",
+			JniResult.Inner => "JNI error.",
+			_ => "Unknown error.",
+		};
 
 		/// <summary>
 		/// Creates an instance of the <see cref="JniException" /> class with serialized data.

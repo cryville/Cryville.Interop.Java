@@ -25,13 +25,7 @@ namespace Cryville.Interop.Java.Xamarin {
 		/// <summary>
 		/// An instance of the <see cref="JniEnv" /> singleton class.
 		/// </summary>
-		public static JniEnv Instance {
-			get {
-				if (m_instance == null)
-					m_instance = new JniEnv();
-				return m_instance;
-			}
-		}
+		public static JniEnv Instance => m_instance ??= new JniEnv();
 		JniEnv() { }
 
 		/// <inheritdoc />
@@ -502,7 +496,7 @@ namespace Cryville.Interop.Java.Xamarin {
 		/// <inheritdoc />
 		public void SetStaticShortField(IntPtr clazz, IntPtr fieldID, short value) => StaticFields.SetStaticShortField(new JniObjectReference(clazz), GetStaticField(fieldID), value);
 		/// <inheritdoc />
-		public void Throw(IntPtr obj) {
+		public void ThrowObject(IntPtr obj) {
 			try { Exceptions.Throw(new JniObjectReference(obj)); }
 			catch (JavaException ex) { throw new JniException(ex); }
 			catch (InvalidOperationException ex) { throw new JniException(ex); }

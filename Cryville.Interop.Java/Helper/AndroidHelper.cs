@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace Cryville.Interop.Java.Helper {
 	/// <summary>
@@ -13,11 +14,10 @@ namespace Cryville.Interop.Java.Helper {
 			get {
 				if (m_deviceApiLevel == 0) {
 					var env = JavaVMManager.CurrentEnv;
-					using (var frame = new JniLocalFrame(env, 1)) {
-						var c = env.FindClass("android/os/Build$VERSION");
-						var m = env.GetStaticFieldID(c, "SDK_INT", "I");
-						m_deviceApiLevel = env.GetStaticIntField(c, m);
-					}
+					using var frame = new JniLocalFrame(env, 1);
+					var c = env.FindClass("android/os/Build$VERSION");
+					var m = env.GetStaticFieldID(c, "SDK_INT", "I");
+					m_deviceApiLevel = env.GetStaticIntField(c, m);
 				}
 				return m_deviceApiLevel;
 			}
@@ -32,13 +32,12 @@ namespace Cryville.Interop.Java.Helper {
 		/// <para>This method can only be called from the main thread, otherwise it may return a reference to <c>null</c>.</para>
 		/// </remarks>
 		public static IntPtr GetCurrentApplication(IJniEnv env) {
-			using (var frame = new JniLocalFrame(env, 2)) {
-				var c = env.FindClass("android/app/ActivityThread");
-				if (c == IntPtr.Zero) throw new InvalidOperationException("Could not find the Java class android.app.ActivityThread.");
-				var m = env.GetStaticMethodID(c, "currentApplication", "()Landroid/app/Application;");
-				if (m == IntPtr.Zero) throw new InvalidOperationException("Could not find the method currentApplication() on Java class android.app.ActivityThread.");
-				return frame.Pop(env.CallStaticObjectMethod(c, m, ArgumentHelper.Args()));
-			}
+			using var frame = new JniLocalFrame(env, 2);
+			var c = env.FindClass("android/app/ActivityThread");
+			if (c == IntPtr.Zero) throw new InvalidOperationException("Could not find the Java class android.app.ActivityThread.");
+			var m = env.GetStaticMethodID(c, "currentApplication", "()Landroid/app/Application;");
+			if (m == IntPtr.Zero) throw new InvalidOperationException("Could not find the method currentApplication() on Java class android.app.ActivityThread.");
+			return frame.Pop(env.CallStaticObjectMethod(c, m, ArgumentHelper.Args()));
 		}
 
 		/// <summary>
@@ -49,17 +48,16 @@ namespace Cryville.Interop.Java.Helper {
 		/// <param name="name">The name of a static field in the class <c>android.content.Context</c>.</param>
 		/// <returns>A local reference to a system service.</returns>
 		public static IntPtr GetSystemService(IJniEnv env, IntPtr context, string name) {
-			using (var frame = new JniLocalFrame(env, 3)) {
-				var c = env.FindClass("android/content/Context");
-				if (c == IntPtr.Zero) throw new InvalidOperationException("Could not find the Java class android.content.Context.");
-				var f = env.GetStaticFieldID(c, name, "Ljava/lang/String;");
-				if (f == IntPtr.Zero) throw new InvalidOperationException(string.Format("Could not find the static field {0} on Java class android.content.Context.", name));
-				var v = env.GetStaticObjectField(c, f);
+			using var frame = new JniLocalFrame(env, 3);
+			var c = env.FindClass("android/content/Context");
+			if (c == IntPtr.Zero) throw new InvalidOperationException("Could not find the Java class android.content.Context.");
+			var f = env.GetStaticFieldID(c, name, "Ljava/lang/String;");
+			if (f == IntPtr.Zero) throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "Could not find the static field {0} on Java class android.content.Context.", name));
+			var v = env.GetStaticObjectField(c, f);
 
-				var m = env.GetMethodID(c, "getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;");
-				if (m == IntPtr.Zero) throw new InvalidOperationException("Could not find the method getSystemService(String) on Java class android.content.Context.");
-				return frame.Pop(env.CallObjectMethod(context, m, ArgumentHelper.Args(new JniValue(v))));
-			}
+			var m = env.GetMethodID(c, "getSystemService", "(Ljava/lang/String;)Ljava/lang/Object;");
+			if (m == IntPtr.Zero) throw new InvalidOperationException("Could not find the method getSystemService(String) on Java class android.content.Context.");
+			return frame.Pop(env.CallObjectMethod(context, m, ArgumentHelper.Args(new JniValue(v))));
 		}
 	}
 }

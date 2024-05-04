@@ -241,7 +241,7 @@ namespace Cryville.Interop.Java.Unity {
 		public void SetStaticLongField(IntPtr clazz, IntPtr fieldID, long value) => AndroidJNI.SetStaticLongField(clazz, fieldID, value);
 		public void SetStaticObjectField(IntPtr clazz, IntPtr fieldID, IntPtr value) => AndroidJNI.SetStaticObjectField(clazz, fieldID, value);
 		public void SetStaticShortField(IntPtr clazz, IntPtr fieldID, short value) => AndroidJNI.SetStaticShortField(clazz, fieldID, value);
-		public void Throw(IntPtr obj) => JniException.Check((JniResult)AndroidJNI.Throw(obj));
+		public void ThrowObject(IntPtr obj) => JniException.Check((JniResult)AndroidJNI.Throw(obj));
 		public void ThrowNew(IntPtr clazz, string message) => JniException.Check((JniResult)AndroidJNI.ThrowNew(clazz, message));
 		public IntPtr ToReflectedField(IntPtr cls, IntPtr fieldID, bool isStatic) => AndroidJNI.ToReflectedField(cls, fieldID, isStatic);
 		public IntPtr ToReflectedMethod(IntPtr cls, IntPtr methodID, bool isStatic) => AndroidJNI.ToReflectedMethod(cls, methodID, isStatic);

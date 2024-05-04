@@ -1,66 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{732D2E53-A57A-4143-9A7B-A763D2E8B9B4}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cryville.Interop.Java</RootNamespace>
-    <AssemblyName>Cryville.Interop.Java</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Cryville.Interop.Java.xml</DocumentationFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UnsafeIL">
-      <HintPath>..\References\UnsafeIL.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Helper\AndroidHelper.cs" />
-    <Compile Include="Helper\ArgumentHelper.cs" />
-    <Compile Include="Helper\JniLocalFrame.cs" />
-    <Compile Include="IJniInvoke.cs" />
-    <Compile Include="JavaVMAttachArgs.cs" />
-    <Compile Include="JavaVMManager.cs" />
-    <Compile Include="JniException.cs" />
-    <Compile Include="JniNativeMethod.cs" />
-    <Compile Include="JniObjectRefType.cs" />
-    <Compile Include="JniReleaseArrayElementsMode.cs" />
-    <Compile Include="IJniEnv.cs" />
-    <Compile Include="JniResult.cs" />
-    <Compile Include="JniValue.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>netframework3.5;netstandard2.0</TargetFrameworks>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+		<AnalysisLevel>latest-all</AnalysisLevel>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<ProjectGuid>{732D2E53-A57A-4143-9A7B-A763D2E8B9B4}</ProjectGuid>
+		<Version>2.0.0</Version>
+		<Authors>Cryville</Authors>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<RepositoryUrl>https://github.com/cryville/Cryville.Interop.Java</RepositoryUrl>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<Description>A .NET interface to Java native interface (JNI) and its implementation in some common frameworks.</Description>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<Reference Include="UnsafeIL">
+			<HintPath>..\References\UnsafeIL.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 </Project>

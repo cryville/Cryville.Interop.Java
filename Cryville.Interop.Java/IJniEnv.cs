@@ -99,7 +99,7 @@ namespace Cryville.Interop.Java {
 		/// </summary>
 		/// <param name="obj">A <c>java.lang.Throwable</c> object.</param>
 		/// <exception cref="JniException">On failure.</exception>
-		void Throw(IntPtr obj);
+		void ThrowObject(IntPtr obj);
 		/// <summary>
 		/// Constructs an exception object from the specified class with the message specified by <paramref name="message" /> and causes that exception to be thrown.
 		/// </summary>
@@ -192,11 +192,11 @@ namespace Cryville.Interop.Java {
 		bool IsSameObject(IntPtr ref1, IntPtr ref2);
 
 		/// <summary>
-		/// Creates a new local reference that refers to the same object as <paramref name="ref" />.
+		/// Creates a new local reference that refers to the same object as <paramref name="reference" />.
 		/// </summary>
-		/// <param name="ref">A global or local reference.</param>
-		/// <returns>A new local reference that refers to the same object as <paramref name="ref" />. <see cref="IntPtr.Zero" /> if <paramref name="ref" /> refers to <c>null</c>.</returns>
-		IntPtr NewLocalRef(IntPtr @ref);
+		/// <param name="reference">A global or local reference.</param>
+		/// <returns>A new local reference that refers to the same object as <paramref name="reference" />. <see cref="IntPtr.Zero" /> if <paramref name="reference" /> refers to <c>null</c>.</returns>
+		IntPtr NewLocalRef(IntPtr reference);
 		/// <summary>
 		/// Ensures that at least a given number of local references can be created in the current thread.
 		/// </summary>
@@ -511,28 +511,28 @@ namespace Cryville.Interop.Java {
 		/// <summary>
 		/// Returns the length (the count of Unicode characters) of a Java string.
 		/// </summary>
-		/// <param name="string">A Java string object.</param>
+		/// <param name="str">A Java string object.</param>
 		/// <returns>The length of the Java string.</returns>
-		int GetStringLength(IntPtr @string);
+		int GetStringLength(IntPtr str);
 		/// <summary>
 		/// Returns a pointer to the array of Unicode characters of the string.
 		/// </summary>
-		/// <param name="string">A Java string object.</param>
+		/// <param name="str">A Java string object.</param>
 		/// <param name="isCopy">Set to <see langword="true" /> if a copy is made; or set to <see langword="false" /> if no copy is made.</param>
 		/// <returns>A pointer to a Unicode string, or <see cref="IntPtr.Zero" /> if the operation fails.</returns>
 		/// <remarks>
 		/// <para>The returned pointer is valid until <see cref="ReleaseStringChars(IntPtr, char*)" /> is called.</para>
 		/// </remarks>
-		char* GetStringChars(IntPtr @string, out bool isCopy);
+		char* GetStringChars(IntPtr str, out bool isCopy);
 		/// <summary>
 		/// Informs the VM that the native code no longer needs access to <paramref name="chars" />.
 		/// </summary>
-		/// <param name="string">A Java string object.</param>
+		/// <param name="str">A Java string object.</param>
 		/// <param name="chars">A pointer to a Unicode string.</param>
 		/// <remarks>
 		/// <para>The <paramref name="chars" /> argument is a pointer obtained from string using <see cref="GetStringChars(IntPtr, out bool)" />.</para>
 		/// </remarks>
-		void ReleaseStringChars(IntPtr @string, char* chars);
+		void ReleaseStringChars(IntPtr str, char* chars);
 		/// <summary>
 		/// Constructs a new <c>java.lang.String</c> object from an array of characters in modified UTF-8 encoding.
 		/// </summary>
@@ -542,28 +542,28 @@ namespace Cryville.Interop.Java {
 		/// <summary>
 		/// Returns the length in bytes of the modified UTF-8 representation of a string.
 		/// </summary>
-		/// <param name="string">A Java string object.</param>
+		/// <param name="str">A Java string object.</param>
 		/// <returns>Returns the UTF-8 length of the string.</returns>
-		int GetStringUTFLength(IntPtr @string);
+		int GetStringUTFLength(IntPtr str);
 		/// <summary>
 		/// Returns a pointer to an array of bytes representing the string in modified UTF-8 encoding.
 		/// </summary>
-		/// <param name="string">A Java string object.</param>
+		/// <param name="str">A Java string object.</param>
 		/// <param name="isCopy">Set to <see langword="true" /> if a copy is made; or set to <see langword="false" /> if no copy is made.</param>
 		/// <returns>A pointer to a modified UTF-8 string, or <see cref="IntPtr.Zero" /> if the operation fails.</returns>
 		/// <remarks>
 		/// <para>The returned array is valid until it is released by <see cref="ReleaseStringUTFChars(char*, byte*)" />.</para>
 		/// </remarks>
-		byte* GetStringUTFChars(IntPtr @string, out bool isCopy);
+		byte* GetStringUTFChars(IntPtr str, out bool isCopy);
 		/// <summary>
 		/// Informs the VM that the native code no longer needs access to <paramref name="utf" />.
 		/// </summary>
-		/// <param name="string">A Java string object.</param>
+		/// <param name="str">A Java string object.</param>
 		/// <param name="utf">A pointer to a modified UTF-8 string.</param>
 		/// <remarks>
 		/// <para>The <paramref name="utf" /> argument is a pointer derived from string using <see cref="GetStringUTFChars(IntPtr, out bool)" />.</para>
 		/// </remarks>
-		void ReleaseStringUTFChars(char* @string, byte* utf);
+		void ReleaseStringUTFChars(char* str, byte* utf);
 		/// <summary>
 		/// Returns the number of elements in the array.
 		/// </summary>
@@ -819,24 +819,24 @@ namespace Cryville.Interop.Java {
 		/// <summary>
 		/// Returns a pointer to the array of Unicode characters of the string.
 		/// </summary>
-		/// <param name="string">A Java string object.</param>
+		/// <param name="str">A Java string object.</param>
 		/// <param name="isCopy">Set to <see langword="true" /> if a copy is made; or it is set to <see langword="false" /> if no copy is made.</param>
 		/// <returns>A pointer to a Unicode string, or <see cref="IntPtr.Zero" /> if the operation fails.</returns>
 		/// <remarks>
 		/// <para>The returned pointer is valid until <see cref="ReleaseStringChars(IntPtr, char*)" /> is called.</para>
 		/// <para>There are significant restrictions on how this function can be used. In a code segment enclosed by <see cref="GetStringCritical(IntPtr, out bool)" /> and <see cref="ReleaseStringCritical(IntPtr, char*)" /> calls, the native code must not issue arbitrary JNI calls, or cause the current thread to block.</para>
 		/// </remarks>
-		char* GetStringCritical(IntPtr @string, out bool isCopy);
+		char* GetStringCritical(IntPtr str, out bool isCopy);
 		/// <summary>
 		/// Informs the VM that the native code no longer needs access to <paramref name="carray" />.
 		/// </summary>
-		/// <param name="string">A Java string object.</param>
+		/// <param name="str">A Java string object.</param>
 		/// <param name="carray">A pointer to a Unicode string.</param>
 		/// <remarks>
 		/// <para>The <paramref name="carray" /> argument is a pointer obtained from string using <see cref="GetStringChars(IntPtr, out bool)" />.</para>
 		/// <para>There are significant restrictions on how this function can be used. In a code segment enclosed by <see cref="GetStringCritical(IntPtr, out bool)" /> and <see cref="ReleaseStringCritical(IntPtr, char*)" /> calls, the native code must not issue arbitrary JNI calls, or cause the current thread to block.</para>
 		/// </remarks>
-		void ReleaseStringCritical(IntPtr @string, char* carray);
+		void ReleaseStringCritical(IntPtr str, char* carray);
 
 		/// <summary>
 		/// Creates a new weak global reference.

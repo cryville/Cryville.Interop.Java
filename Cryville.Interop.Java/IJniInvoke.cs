@@ -14,7 +14,7 @@ namespace Cryville.Interop.Java {
 		/// <summary>
 		/// Attaches the current thread to a Java VM.
 		/// </summary>
-		/// <param name="thr_args"><see langword="null" /> or a <see cref="JavaVMAttachArgs" /> structure to specify additional information.</param>
+		/// <param name="thrArgs"><see langword="null" /> or a <see cref="JavaVMAttachArgs" /> structure to specify additional information.</param>
 		/// <returns>A JNI interface.</returns>
 		/// <exception cref="JniException">On failure.</exception>
 		/// <remarks>
@@ -22,7 +22,7 @@ namespace Cryville.Interop.Java {
 		/// <para>A native thread cannot be attached simultaneously to two Java VMs.</para>
 		/// <para>When a thread is attached to the VM, the context class loader is the bootstrap loader.</para>
 		/// </remarks>
-		IJniEnv AttachCurrentThread(JavaVMAttachArgs? thr_args);
+		IJniEnv AttachCurrentThread(JavaVMAttachArgs? thrArgs);
 		/// <summary>
 		/// Detaches the current thread from a Java VM.
 		/// </summary>
