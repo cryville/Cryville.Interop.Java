@@ -2,6 +2,7 @@ using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace Cryville.Interop.Java.ObjectStream {
@@ -29,38 +30,61 @@ namespace Cryville.Interop.Java.ObjectStream {
 
 		readonly byte[] _buffer = new byte[8];
 		readonly byte[] _utfBuffer = new byte[ushort.MaxValue];
+		public void ReadExactly(Span<byte> buffer) {
+#if NET7_0_OR_GREATER
+			_stream.ReadExactly(buffer);
+#else
+			int num;
+			for (int i = 0; i < buffer.Length; i += num) {
+				num = _stream.Read(buffer[i..]);
+				if (num == 0) throw new EndOfStreamException();
+			}
+#endif
+		}
 		byte ReadByte() {
 			var result = _stream.ReadByte();
 			if (result == -1) throw new EndOfStreamException();
 			return (byte)result;
 		}
 		short ReadInt16() {
-			_stream.ReadExactly(_buffer.AsSpan()[..sizeof(short)]);
+			ReadExactly(_buffer.AsSpan()[..sizeof(short)]);
 			return BinaryPrimitives.ReadInt16BigEndian(_buffer);
 		}
 		ushort ReadUInt16() {
-			_stream.ReadExactly(_buffer.AsSpan()[..sizeof(ushort)]);
+			ReadExactly(_buffer.AsSpan()[..sizeof(ushort)]);
 			return BinaryPrimitives.ReadUInt16BigEndian(_buffer);
 		}
 		int ReadInt32() {
-			_stream.ReadExactly(_buffer.AsSpan()[..sizeof(int)]);
+			ReadExactly(_buffer.AsSpan()[..sizeof(int)]);
 			return BinaryPrimitives.ReadInt32BigEndian(_buffer);
 		}
 		long ReadInt64() {
-			_stream.ReadExactly(_buffer.AsSpan()[..sizeof(long)]);
+			ReadExactly(_buffer.AsSpan()[..sizeof(long)]);
 			return BinaryPrimitives.ReadInt64BigEndian(_buffer);
 		}
 		float ReadSingle() {
-			_stream.ReadExactly(_buffer.AsSpan()[..sizeof(float)]);
+			ReadExactly(_buffer.AsSpan()[..sizeof(float)]);
+#if NET5_0_OR_GREATER
 			return BinaryPrimitives.ReadSingleBigEndian(_buffer);
+#else
+			return BitConverter.IsLittleEndian ?
+				BitConverter.Int32BitsToSingle(BinaryPrimitives.ReverseEndianness(MemoryMarshal.Read<int>(_buffer))) :
+				MemoryMarshal.Read<float>(_buffer);
+#endif
 		}
 		double ReadDouble() {
-			_stream.ReadExactly(_buffer.AsSpan()[..sizeof(double)]);
+			ReadExactly(_buffer.AsSpan()[..sizeof(double)]);
+#if NET5_0_OR_GREATER
 			return BinaryPrimitives.ReadDoubleBigEndian(_buffer);
+#else
+			return BitConverter.IsLittleEndian ?
+				BitConverter.Int64BitsToDouble(BinaryPrimitives.ReverseEndianness(MemoryMarshal.Read<long>(_buffer))) :
+				MemoryMarshal.Read<double>(_buffer);
+#endif
 		}
 		string ReadUtf() {
 			var len = ReadUInt16();
-			_stream.ReadExactly(_utfBuffer.AsSpan()[..len]);
+			ReadExactly(_utfBuffer.AsSpan()[..len]);
 			return Shared.Encoding.GetString(_utfBuffer.AsSpan()[..len]);
 		}
 
@@ -194,8 +218,8 @@ namespace Cryville.Interop.Java.ObjectStream {
 
 		public byte[] ReadBlockDataCore() {
 			var len = ReadByte();
-			var result = GC.AllocateUninitializedArray<byte>(len);
-			_stream.ReadExactly(result);
+			var result = new byte[len];
+			ReadExactly(result);
 			return result;
 		}
 	}
