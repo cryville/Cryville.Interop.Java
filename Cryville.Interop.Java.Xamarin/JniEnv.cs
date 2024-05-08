@@ -21,7 +21,7 @@ namespace Cryville.Interop.Java.Xamarin {
 	/// <para><see cref="GetStringCritical(IntPtr, out bool)" /> and <see cref="ReleaseStringCritical(IntPtr, char*)" /> are identical to <see cref="GetStringChars(IntPtr, out bool)" /> and <see cref="ReleaseStringChars(IntPtr, char*)" /> respectively.</para>
 	/// </remarks>
 	public unsafe class JniEnv : IJniEnv {
-		static JniEnv m_instance;
+		static JniEnv? m_instance;
 		/// <summary>
 		/// An instance of the <see cref="JniEnv" /> singleton class.
 		/// </summary>
@@ -30,7 +30,7 @@ namespace Cryville.Interop.Java.Xamarin {
 
 		/// <inheritdoc />
 		public IntPtr AllocObject(IntPtr clazz) => Object.AllocObject(new JniObjectReference(clazz)).Handle;
-		readonly Dictionary<IntPtr, JniMethodInfo> _methods = new Dictionary<IntPtr, JniMethodInfo>();
+		readonly Dictionary<IntPtr, JniMethodInfo> _methods = [];
 		JniMethodInfo GetMethod(IntPtr methodID) {
 			if (!_methods.TryGetValue(methodID, out var methodInfo))
 				_methods.Add(methodID, methodInfo = new JniMethodInfo(methodID, false));
@@ -112,7 +112,7 @@ namespace Cryville.Interop.Java.Xamarin {
 		public short CallShortMethod(IntPtr obj, IntPtr methodID, JniValue[] args) {
 			fixed (JniValue* pargs = args) return InstanceMethods.CallShortMethod(new JniObjectReference(obj), GetMethod(methodID), (JniArgumentValue*)pargs);
 		}
-		readonly Dictionary<IntPtr, JniMethodInfo> _staticMethods = new Dictionary<IntPtr, JniMethodInfo>();
+		readonly Dictionary<IntPtr, JniMethodInfo> _staticMethods = [];
 		JniMethodInfo GetStaticMethod(IntPtr methodID) {
 			if (!_staticMethods.TryGetValue(methodID, out var methodInfo))
 				_staticMethods.Add(methodID, methodInfo = new JniMethodInfo(methodID, true));
@@ -209,7 +209,7 @@ namespace Cryville.Interop.Java.Xamarin {
 		}
 		/// <inheritdoc />
 		public unsafe void GetBooleanArrayRegion(IntPtr array, int start, int len, bool* buf) => Arrays.GetBooleanArrayRegion(new JniObjectReference(array), start, len, buf);
-		readonly Dictionary<IntPtr, JniFieldInfo> _fields = new Dictionary<IntPtr, JniFieldInfo>();
+		readonly Dictionary<IntPtr, JniFieldInfo> _fields = [];
 		JniFieldInfo GetField(IntPtr fieldID) {
 			if (!_fields.TryGetValue(fieldID, out var fieldInfo))
 				_fields.Add(fieldID, fieldInfo = new JniFieldInfo(fieldID, false));
@@ -295,7 +295,7 @@ namespace Cryville.Interop.Java.Xamarin {
 		public unsafe void GetShortArrayRegion(IntPtr array, int start, int len, short* buf) => Arrays.GetShortArrayRegion(new JniObjectReference(array), start, len, buf);
 		/// <inheritdoc />
 		public short GetShortField(IntPtr obj, IntPtr fieldID) => InstanceFields.GetShortField(new JniObjectReference(obj), GetField(fieldID));
-		readonly Dictionary<IntPtr, JniFieldInfo> _staticFields = new Dictionary<IntPtr, JniFieldInfo>();
+		readonly Dictionary<IntPtr, JniFieldInfo> _staticFields = [];
 		JniFieldInfo GetStaticField(IntPtr fieldID) {
 			if (!_staticFields.TryGetValue(fieldID, out var fieldInfo))
 				_staticFields.Add(fieldID, fieldInfo = new JniFieldInfo(fieldID, true));
@@ -324,16 +324,16 @@ namespace Cryville.Interop.Java.Xamarin {
 		/// <inheritdoc />
 		public short GetStaticShortField(IntPtr clazz, IntPtr fieldID) => StaticFields.GetStaticShortField(new JniObjectReference(clazz), GetStaticField(fieldID));
 		/// <inheritdoc />
-		public unsafe char* GetStringChars(IntPtr @string, out bool isCopy) {
-			fixed (bool* ptr = &isCopy) return Strings.GetStringChars(new JniObjectReference(@string), ptr);
+		public unsafe char* GetStringChars(IntPtr str, out bool isCopy) {
+			fixed (bool* ptr = &isCopy) return Strings.GetStringChars(new JniObjectReference(str), ptr);
 		}
 		/// <inheritdoc />
-		public unsafe char* GetStringCritical(IntPtr @string, out bool isCopy) => GetStringChars(@string, out isCopy);
+		public unsafe char* GetStringCritical(IntPtr str, out bool isCopy) => GetStringChars(str, out isCopy);
 		/// <inheritdoc />
-		public int GetStringLength(IntPtr @string) => Strings.GetStringLength(new JniObjectReference(@string));
+		public int GetStringLength(IntPtr str) => Strings.GetStringLength(new JniObjectReference(str));
 		/// <inheritdoc />
 		public unsafe void GetStringRegion(IntPtr str, int start, int len, char* buf) {
-			if (start < 0) throw new ArgumentOutOfRangeException(nameof(start));
+			ArgumentOutOfRangeException.ThrowIfNegative(start);
 			int strLen = GetStringLength(str);
 			if (start + len > strLen) throw new ArgumentOutOfRangeException(nameof(len));
 			bool _;
@@ -342,9 +342,9 @@ namespace Cryville.Interop.Java.Xamarin {
 			ReleaseStringChars(str, s);
 		}
 		/// <inheritdoc />
-		public unsafe byte* GetStringUTFChars(IntPtr @string, out bool isCopy) => throw new NotImplementedException();
+		public unsafe byte* GetStringUTFChars(IntPtr str, out bool isCopy) => throw new NotImplementedException();
 		/// <inheritdoc />
-		public int GetStringUTFLength(IntPtr @string) => throw new NotImplementedException();
+		public int GetStringUTFLength(IntPtr str) => throw new NotImplementedException();
 		/// <inheritdoc />
 		public unsafe void GetStringUTFRegion(IntPtr str, int start, int len, byte* buf) => throw new NotImplementedException();
 		/// <inheritdoc />
@@ -386,7 +386,7 @@ namespace Cryville.Interop.Java.Xamarin {
 		/// <inheritdoc />
 		public IntPtr NewIntArray(int length) => Arrays.NewIntArray(length).Handle;
 		/// <inheritdoc />
-		public IntPtr NewLocalRef(IntPtr @ref) => new JniObjectReference(@ref).NewLocalRef().Handle;
+		public IntPtr NewLocalRef(IntPtr reference) => new JniObjectReference(reference).NewLocalRef().Handle;
 		/// <inheritdoc />
 		public IntPtr NewLongArray(int length) => Arrays.NewLongArray(length).Handle;
 		/// <inheritdoc />
@@ -436,11 +436,11 @@ namespace Cryville.Interop.Java.Xamarin {
 		/// <inheritdoc />
 		public unsafe void ReleaseShortArrayElements(IntPtr array, short* elems, JniReleaseArrayElementsMode mode) => Arrays.ReleaseShortArrayElements(new JniObjectReference(array), elems, (ReleaseMode)(int)mode);
 		/// <inheritdoc />
-		public unsafe void ReleaseStringChars(IntPtr @string, char* chars) => Strings.ReleaseStringChars(new JniObjectReference(@string), chars);
+		public unsafe void ReleaseStringChars(IntPtr str, char* chars) => Strings.ReleaseStringChars(new JniObjectReference(str), chars);
 		/// <inheritdoc />
-		public unsafe void ReleaseStringCritical(IntPtr @string, char* carray) => ReleaseStringChars(@string, carray);
+		public unsafe void ReleaseStringCritical(IntPtr str, char* carray) => ReleaseStringChars(str, carray);
 		/// <inheritdoc />
-		public unsafe void ReleaseStringUTFChars(char* @string, byte* utf) => throw new NotImplementedException();
+		public unsafe void ReleaseStringUTFChars(char* str, byte* utf) => throw new NotImplementedException();
 		/// <inheritdoc />
 		public unsafe void SetBooleanArrayRegion(IntPtr array, int start, int len, bool* buf) => Arrays.SetBooleanArrayRegion(new JniObjectReference(array), start, len, buf);
 		/// <inheritdoc />

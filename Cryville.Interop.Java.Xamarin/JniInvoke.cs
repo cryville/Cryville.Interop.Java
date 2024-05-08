@@ -11,7 +11,7 @@ namespace Cryville.Interop.Java.Xamarin {
 	/// <para><see cref="GetEnv(int)" /> always succeeds.</para>
 	/// </remarks>
 	public class JniInvoke : IJniInvoke {
-		static JniInvoke m_instance;
+		static JniInvoke? m_instance;
 		/// <summary>
 		/// An instance of the <see cref="JniInvoke" /> singleton class.
 		/// </summary>
@@ -19,10 +19,10 @@ namespace Cryville.Interop.Java.Xamarin {
 		JniInvoke() { }
 
 		/// <inheritdoc />
-		public IJniEnv AttachCurrentThread(JavaVMAttachArgs? thr_args) {
-			string name = null;
+		public IJniEnv AttachCurrentThread(JavaVMAttachArgs? thrArgs) {
+			string? name = null;
 			IntPtr group = default;
-			if (thr_args is JavaVMAttachArgs args) {
+			if (thrArgs is JavaVMAttachArgs args) {
 				name = args.Name;
 				group = args.Group;
 			}
