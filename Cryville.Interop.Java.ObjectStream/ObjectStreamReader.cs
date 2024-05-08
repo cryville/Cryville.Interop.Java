@@ -112,7 +112,7 @@ namespace Cryville.Interop.Java.ObjectStream {
 				Shared.TC_STRING => ReadStringCore(),
 				Shared.TC_LONGSTRING => throw new NotImplementedException(),
 				Shared.TC_ENUM => throw new NotImplementedException(),
-				Shared.TC_CLASSDESC => throw new NotImplementedException(),
+				Shared.TC_CLASSDESC => ReadClassDescCore(),
 				Shared.TC_PROXYCLASSDESC => throw new NotImplementedException(),
 				Shared.TC_REFERENCE => ReadPrevObjectCore(),
 				Shared.TC_NULL => null,
