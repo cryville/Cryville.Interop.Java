@@ -143,15 +143,15 @@ namespace Cryville.Interop.Java.Unity {
 		public IntPtr GetStaticMethodID(IntPtr clazz, string name, string sig) => AndroidJNI.GetStaticMethodID(clazz, name, sig);
 		public IntPtr GetStaticObjectField(IntPtr clazz, IntPtr fieldID) => AndroidJNI.GetStaticObjectField(clazz, fieldID);
 		public short GetStaticShortField(IntPtr clazz, IntPtr fieldID) => AndroidJNI.GetStaticShortField(clazz, fieldID);
-		public char* GetStringChars(IntPtr @string, out bool isCopy) {
-			var str = AndroidJNI.GetStringChars(@string);
-			char* ptr = (char*)Marshal.AllocHGlobal(str.Length * sizeof(char));
-			for (int i = 0; i < str.Length; i++) ptr[i] = str[i];
+		public char* GetStringChars(IntPtr str, out bool isCopy) {
+			var s = AndroidJNI.GetStringChars(str);
+			char* ptr = (char*)Marshal.AllocHGlobal(s.Length * sizeof(char));
+			for (int i = 0; i < s.Length; i++) ptr[i] = s[i];
 			isCopy = true;
 			return ptr;
 		}
-		public char* GetStringCritical(IntPtr @string, out bool isCopy) => GetStringChars(@string, out isCopy);
-		public int GetStringLength(IntPtr @string) => AndroidJNI.GetStringLength(@string);
+		public char* GetStringCritical(IntPtr str, out bool isCopy) => GetStringChars(str, out isCopy);
+		public int GetStringLength(IntPtr str) => AndroidJNI.GetStringLength(str);
 		public void GetStringRegion(IntPtr str, int start, int len, char* buf) {
 			if (start < 0) throw new ArgumentOutOfRangeException(nameof(start));
 			int strLen = GetStringLength(str);
@@ -159,8 +159,8 @@ namespace Cryville.Interop.Java.Unity {
 			var s = AndroidJNI.GetStringChars(str);
 			for (int i = 0; i < len; i++) buf[i] = s[start + i];
 		}
-		public byte* GetStringUTFChars(IntPtr @string, out bool isCopy) => throw new NotImplementedException();
-		public int GetStringUTFLength(IntPtr @string) => AndroidJNI.GetStringUTFLength(@string);
+		public byte* GetStringUTFChars(IntPtr str, out bool isCopy) => throw new NotImplementedException();
+		public int GetStringUTFLength(IntPtr str) => AndroidJNI.GetStringUTFLength(str);
 		public void GetStringUTFRegion(IntPtr str, int start, int len, byte* buf) => throw new NotImplementedException();
 		public IntPtr GetSuperclass(IntPtr clazz) => AndroidJNI.GetSuperclass(clazz);
 		public int GetVersion() => AndroidJNI.GetVersion();
@@ -177,7 +177,7 @@ namespace Cryville.Interop.Java.Unity {
 		public IntPtr NewFloatArray(int length) => AndroidJNI.NewFloatArray(length);
 		public IntPtr NewGlobalRef(IntPtr obj) => AndroidJNI.NewGlobalRef(obj);
 		public IntPtr NewIntArray(int length) => AndroidJNI.NewIntArray(length);
-		public IntPtr NewLocalRef(IntPtr @ref) => AndroidJNI.NewLocalRef(@ref);
+		public IntPtr NewLocalRef(IntPtr reference) => AndroidJNI.NewLocalRef(reference);
 		public IntPtr NewLongArray(int length) => AndroidJNI.NewLongArray(length);
 		public IntPtr NewObject(IntPtr clazz, IntPtr methodID, JniValue[] args) => AndroidJNI.NewObject(clazz, methodID, Unsafe.As<jvalue[]>(args));
 		public IntPtr NewObjectArray(int length, IntPtr elementClass, IntPtr initialElement) => AndroidJNI.NewObjectArray(length, elementClass, initialElement);
@@ -197,9 +197,9 @@ namespace Cryville.Interop.Java.Unity {
 		public void ReleaseLongArrayElements(IntPtr array, long* elems, JniReleaseArrayElementsMode mode) => Marshal.FreeHGlobal((IntPtr)elems);
 		public void ReleasePrimitiveArrayCritical(IntPtr array, IntPtr carray, JniReleaseArrayElementsMode mode) => throw new NotImplementedException();
 		public void ReleaseShortArrayElements(IntPtr array, short* elems, JniReleaseArrayElementsMode mode) => Marshal.FreeHGlobal((IntPtr)elems);
-		public void ReleaseStringChars(IntPtr @string, char* chars) => Marshal.FreeHGlobal((IntPtr)chars);
-		public void ReleaseStringCritical(IntPtr @string, char* carray) => Marshal.FreeHGlobal((IntPtr)carray);
-		public void ReleaseStringUTFChars(char* @string, byte* utf) => throw new NotImplementedException();
+		public void ReleaseStringChars(IntPtr str, char* chars) => Marshal.FreeHGlobal((IntPtr)chars);
+		public void ReleaseStringCritical(IntPtr str, char* carray) => Marshal.FreeHGlobal((IntPtr)carray);
+		public void ReleaseStringUTFChars(char* str, byte* utf) => throw new NotImplementedException();
 		void SetArrayRegion<T>(IntPtr array, int start, int len, T* buf, Action<IntPtr, int, T> func) where T : unmanaged {
 			if (start < 0) throw new ArgumentOutOfRangeException(nameof(start));
 			int arrLen = GetArrayLength(array);

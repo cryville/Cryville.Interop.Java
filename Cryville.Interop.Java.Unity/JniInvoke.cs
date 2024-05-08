@@ -21,7 +21,7 @@ namespace Cryville.Interop.Java.Unity {
 		}
 		JniInvoke() { }
 
-		public IJniEnv AttachCurrentThread(JavaVMAttachArgs? thr_args) {
+		public IJniEnv AttachCurrentThread(JavaVMAttachArgs? thrArgs) {
 			JniException.Check((JniResult)AndroidJNI.AttachCurrentThread());
 			return JniEnv.Instance;
 		}
