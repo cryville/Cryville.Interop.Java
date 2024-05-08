@@ -1,8 +1,8 @@
 using System.Collections.ObjectModel;
 
 namespace Cryville.Interop.Java.ObjectStream {
-	public class SerializedJavaClassDesc : SerializedJavaContent {
-		public string Name { get; set; }
+	public class SerializedJavaClassDesc(string name) : SerializedJavaContent {
+		public string Name { get; set; } = name;
 		public long SerialVersionUID { get; set; }
 		public JavaClassDescFlags ClassDescFlags { get; set; }
 		public Collection<SerializedJavaField> Fields { get; } = [];

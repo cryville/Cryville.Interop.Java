@@ -161,8 +161,7 @@ namespace Cryville.Interop.Java.ObjectStream {
 		}
 
 		public SerializedJavaClassDesc ReadClassDescCore() {
-			var result = new SerializedJavaClassDesc {
-				Name = ReadUtf(),
+			var result = new SerializedJavaClassDesc(ReadUtf()) {
 				SerialVersionUID = ReadInt64(),
 			};
 			AssignNewHandle(result);
@@ -171,15 +170,15 @@ namespace Cryville.Interop.Java.ObjectStream {
 			for (int i = 0; i < fieldCount; i++) {
 				var typecode = ReadByte();
 				result.Fields.Add(typecode switch {
-					0x42 or 0x43 or 0x44 or 0x46 or 0x49 or 0x4a or 0x53 or 0x5a => new SerializedJavaPrimitiveField {
-						Type = (JavaPrimitiveType)typecode,
-						Name = ReadUtf(),
-					},
-					0x5b or 0x4c => new SerializedJavaObjectField {
-						IsArray = typecode is 0x5b,
-						Name = ReadUtf(),
-						ClassName = (string)(ReadContent() ?? throw new FormatException()),
-					},
+					0x42 or 0x43 or 0x44 or 0x46 or 0x49 or 0x4a or 0x53 or 0x5a => new SerializedJavaPrimitiveField(
+						ReadUtf(),
+						(JavaPrimitiveType)typecode
+					),
+					0x5b or 0x4c => new SerializedJavaObjectField(
+						ReadUtf(),
+						typecode is 0x5b,
+						(string)(ReadContent() ?? throw new FormatException())
+					),
 					_ => throw new FormatException(),
 				});
 			}
