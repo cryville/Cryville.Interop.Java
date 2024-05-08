@@ -6,17 +6,28 @@
 		<AnalysisLevel>latest-all</AnalysisLevel>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<ProjectGuid>{732D2E53-A57A-4143-9A7B-A763D2E8B9B4}</ProjectGuid>
-		<Version>2.0.0</Version>
-		<Authors>Cryville</Authors>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<RepositoryUrl>https://github.com/cryville/Cryville.Interop.Java</RepositoryUrl>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<Description>A .NET interface to Java native interface (JNI) and its implementation in some common frameworks.</Description>
 	</PropertyGroup>
-	
+
+	<PropertyGroup>
+		<Authors>Cryville</Authors>
+		<Copyright>Copyright (c) Cryville 2024</Copyright>
+		<Description>A .NET interface to Java native interface (JNI.)</Description>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://www.cryville.world/Projects/A015</PackageProjectUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageReleaseNotes>Initial release.</PackageReleaseNotes>
+		<PackageTags>interop, java</PackageTags>
+		<RepositoryUrl>https://github.com/cryville/Cryville.Interop.Java</RepositoryUrl>
+		<Version>2.0.0</Version>
+	</PropertyGroup>
+
 	<ItemGroup>
-		<Reference Include="UnsafeIL">
-			<HintPath>..\References\UnsafeIL.dll</HintPath>
-		</Reference>
+		<PackageReference Include="UnsafeIL" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="README.md" Pack="True" PackagePath="\" />
 	</ItemGroup>
 </Project>
