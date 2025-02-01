@@ -23,6 +23,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Cryville.Common.Compat" Version="1.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<None Include="README.md" Pack="True" PackagePath="\" />
 	</ItemGroup>
 
