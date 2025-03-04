@@ -95,9 +95,9 @@ namespace Cryville.Interop.Java.ObjectStream {
 		object ReadPrevObjectCore() {
 			return _handles[ReadInt32() - Shared.BaseWireHandle];
 		}
-		object? ReadResetCore() {
+		SerializedObjectStreamReset ReadResetCore() {
 			_handles.Clear();
-			return null;
+			return SerializedObjectStreamReset.Instance;
 		}
 
 		public object? ReadContent() {

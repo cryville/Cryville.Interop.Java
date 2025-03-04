@@ -21,5 +21,8 @@ namespace Cryville.Interop.Java.ObjectStream {
 		result:
 			return obj.Values[index];
 		}
+		public void Reset() {
+			_fieldMap.Clear();
+		}
 	}
 }

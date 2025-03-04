@@ -65,6 +65,10 @@ namespace Cryville.Interop.Java.ObjectStream {
 			}
 			return false;
 		}
+		public void Reset() {
+			_handles.Clear();
+			Write(Shared.TC_RESET);
+		}
 
 		public void Write(SerializedJavaContent? value) {
 			if (value is null) { Write(Shared.TC_NULL); return; }
