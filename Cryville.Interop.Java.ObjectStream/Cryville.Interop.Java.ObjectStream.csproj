@@ -18,7 +18,7 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageTags>interop, java, stream</PackageTags>
 		<RepositoryUrl>https://github.com/cryville/Cryville.Interop.Java</RepositoryUrl>
-		<Version>0.0.4</Version>
+		<Version>0.0.5</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
